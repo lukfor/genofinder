@@ -1,0 +1,10 @@
+# You can use this file to create a conda environment for this pipeline:
+#   conda env create -f environment.yml
+name: genofindeer
+channels:
+  - defaults
+  - bioconda
+  - conda-forge
+dependencies:
+  - openjdk=11.0.9.1
+  - unzip=6.0

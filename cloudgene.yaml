@@ -1,0 +1,35 @@
+id: genofindeer
+name: Genofindeer
+version: 0.1.0
+description: Nextflow pipeline to extract variants and regions from genotype datasets
+author: Lukas Forer and Sebastian Schoenherr
+website: https://github.com/lukfor/genofinder
+logo: https://avatars.githubusercontent.com/u/930103?s=200&v=4
+
+workflow:
+
+  steps:
+
+    - name: Exrtact Variants
+      type: nextflow
+      script: main.nf
+      # params without UI
+      params.project: ${job_id}
+
+  inputs:
+
+    - id: genotypes
+      description: Genotypes
+      type: app_list
+      category: genotypes
+
+    - id: queries
+      description: BED File
+      type: local_file
+      required: true
+
+  outputs:
+
+    - id: outdir
+      description: Results
+      type: local_folder
