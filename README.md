@@ -1,6 +1,6 @@
-# Extract Variants
+# Genofinder
 
-A nextflow pipeline to extract SNPs, regions from imputed genotypes.
+A nextflow pipeline to extract SNPs and regions from imputed genotypes.
 
 ## Quick Start
 
@@ -29,12 +29,12 @@ nextflow run main.nf -profile test,development
 ## Development
 
 ```
-docker build -t lukfor/extract-variants:latest . # don't ignore the dot
+docker build -t lukfor/genofinder:latest . # don't ignore the dot
 nextflow run main.nf -profile test,development
 ```
 
 ## License
-extract-variants is MIT Licensed.
+genofinder is MIT Licensed.
 
 ## Contact
 If you have any questions about this pipeline please contact
