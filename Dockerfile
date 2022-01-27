@@ -9,9 +9,9 @@ RUN apt-get --allow-releaseinfo-change update && apt-get install -y procps unzip
 
 # Install jbang (not as conda package available)
 WORKDIR "/opt"
-RUN wget https://github.com/jbangdev/jbang/releases/download/v0.81.2/jbang-0.81.2.zip && \
+RUN wget https://github.com/jbangdev/jbang/releases/download/v0.87.0/jbang-0.87.0.zip && \
     unzip -q jbang-*.zip && \
-    mv jbang-0.81.2 jbang  && \
+    mv jbang-0.87.0 jbang  && \
     rm jbang*.zip
 ENV PATH="/opt/jbang/bin:${PATH}"
 

@@ -4,12 +4,13 @@ process PARSE_QUERIES {
 
   input:
     path queries_file
+    path script
 
   output:
     path "${params.project}.bed", emit: bed_file
 
   """
-  cp ${queries_file} ${params.project}.bed
+  jbang ${script} --input ${queries_file} --output ${params.project}.bed
   """
 
 }

@@ -4,6 +4,7 @@ process MERGE_VCF_FILES {
 
   input:
   path vcf_files
+  path vcf_index_files
 
   output:
   path "${params.project}.vcf.gz", emit: vcf_file
@@ -11,8 +12,7 @@ process MERGE_VCF_FILES {
   """
   # if contains a spaceh --> multiple files --> merge needed
   if [[ "${vcf_files}" = *" "* ]]; then
-    bcftools merge -m id ${vcf_files} -o ${params.project}.vcf.gz -Oz
-    tabix ${params.project}.vcf.gz
+    bcftools concat ${vcf_files} -o ${params.project}.vcf.gz -Oz
   else
     cp ${vcf_files} ${params.project}.vcf.gz
   fi

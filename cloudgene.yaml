@@ -1,5 +1,5 @@
-id: genofindeer
-name: Genofindeer
+id: genofinder
+name: Genofinder
 version: 0.1.0
 description: Nextflow pipeline to extract variants and regions from genotype datasets
 author: Lukas Forer and Sebastian Schoenherr

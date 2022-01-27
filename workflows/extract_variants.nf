@@ -17,7 +17,7 @@ if(params.outdir == null) {
 }
 
 //Check imputed file format
-if (params.genotypes_imputed_format != 'vcf' && params.genotypes_imputed_format != 'bgen'){
+if (params.genotypes_imputed_format != 'vcf'){
   exit 1, "File format ${params.genotypes_imputed_format} not supported."
 }
 
@@ -36,11 +36,13 @@ workflow EXTRACT_VARIANTS {
 
     CACHE_JBANG_SCRIPTS (
         file("$baseDir/bin/VcfToCsv.java", checkIfExists: true),
-        file("$baseDir/bin/VcfToCsvTranspose.java", checkIfExists: true)
+        file("$baseDir/bin/VcfToCsvTranspose.java", checkIfExists: true),
+        file("$baseDir/bin/CsvToBed.java", checkIfExists: true)
     )
 
     PARSE_QUERIES (
-        file(params.queries)
+        file(params.queries),
+        CACHE_JBANG_SCRIPTS.out.csv_to_bed_jar,
     )
 
     EXTRACT_REGIONS_FROM_VCF (
@@ -49,7 +51,8 @@ workflow EXTRACT_VARIANTS {
     )
 
     MERGE_VCF_FILES (
-        EXTRACT_REGIONS_FROM_VCF.out.vcf_file.collect()
+        EXTRACT_REGIONS_FROM_VCF.out.vcf_file.collect(),
+        EXTRACT_REGIONS_FROM_VCF.out.vcf_index_file.collect()
     )
 
     VCF_TO_CSV_GT (
