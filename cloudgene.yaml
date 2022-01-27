@@ -24,7 +24,7 @@ workflow:
       category: genotypes
 
     - id: queries
-      description: BED File
+      description: Query File
       type: local_file
       required: true
 
