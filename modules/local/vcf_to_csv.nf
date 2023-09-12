@@ -4,14 +4,18 @@ process VCF_TO_CSV {
 
   input:
   path vcf_file
-  file script
   val genotypes
 
   output:
   path "*.csv", emit: csv_file
 
   """
-  jbang ${script} --input ${vcf_file} --output ${params.project}.${genotypes}.csv --format csv --genotypes ${genotypes}
+  java -jar /opt/genomic-utils.jar \
+    vcf-to-csv \
+    --input ${vcf_file} \
+    --output ${params.project}.${genotypes}.csv \
+    --format csv \
+    --genotypes ${genotypes}
   """
 
 }

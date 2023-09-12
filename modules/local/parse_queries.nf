@@ -4,13 +4,15 @@ process PARSE_QUERIES {
 
   input:
     path queries_file
-    path script
 
   output:
     path "${params.project}.bed", emit: bed_file
 
   """
-  jbang ${script} --input ${queries_file} --output ${params.project}.bed
+  java -jar /opt/genomic-utils.jar \
+    csv-to-bed \
+    --input ${queries_file} \
+    --output ${params.project}.bed
   """
 
 }

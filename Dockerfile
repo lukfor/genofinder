@@ -6,13 +6,10 @@ RUN \
 && conda clean -a
 
 RUN apt-get --allow-releaseinfo-change update && apt-get install -y procps unzip libgomp1
-
-# Install jbang (not as conda package available)
+# Install genomic-utils
 WORKDIR "/opt"
-RUN wget https://github.com/jbangdev/jbang/releases/download/v0.87.0/jbang-0.87.0.zip && \
-    unzip -q jbang-*.zip && \
-    mv jbang-0.87.0 jbang  && \
-    rm jbang*.zip
-ENV PATH="/opt/jbang/bin:${PATH}"
+ENV GENOMIC_UTILS_VERSION="v0.3.7"
+RUN wget https://github.com/genepi/genomic-utils/releases/download/${GENOMIC_UTILS_VERSION}/genomic-utils.jar
 
+ENV JAVA_TOOL_OPTIONS="-Djdk.lang.Process.launchMechanism=vfork"
 RUN apt-get --allow-releaseinfo-change update && apt-get install -y bcftools
