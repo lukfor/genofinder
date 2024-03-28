@@ -15,8 +15,7 @@ process VCF_TO_CSV {
     --input ${vcf_file} \
     --output ${params.project}.${genotypes}.csv \
     --format csv \
-    --genotypes ${genotypes} \
-    --name id
+    --genotypes ${genotypes}
   """
 
 }
