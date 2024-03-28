@@ -47,24 +47,22 @@ workflow EXTRACT_VARIANTS {
         EXTRACT_REGIONS_FROM_VCF.out.vcf_index_file.collect()
     )
 
-    VCF_TO_CSV_GT (
-        MERGE_VCF_FILES.out.vcf_file,
-        "GT"
-    )
+    if (params.rsids != null) {
+        rsids =  Channel.fromFilePairs(params.rsids, size: 2, flat: true)
+        ANNOTATE_VCF (
+            MERGE_VCF_FILES.out.vcf_file,
+            rsids
+        )
+        vcf_file = ANNOTATE_VCF.out.vcf_file
+    } else {
+        vcf_file = MERGE_VCF_FILES.out.vcf_file
+    }
 
-    VCF_TO_CSV_DS (
-        MERGE_VCF_FILES.out.vcf_file,
-        "DS"
-    )
-    VCF_TO_CSV_TRANSPOSE_GT (
-        MERGE_VCF_FILES.out.vcf_file,
-        "GT"
-    )
-
-    VCF_TO_CSV_TRANSPOSE_DS (
-        MERGE_VCF_FILES.out.vcf_file,
-        "DS"
-    )
+    // convert vcf file into different csv files
+    VCF_TO_CSV_GT (vcf_file, "GT")
+    VCF_TO_CSV_DS (vcf_file, "DS")
+    VCF_TO_CSV_TRANSPOSE_GT (vcf_file, "GT")
+    VCF_TO_CSV_TRANSPOSE_DS (vcf_file, "DS")
 
 }
 

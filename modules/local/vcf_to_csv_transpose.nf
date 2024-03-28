@@ -15,7 +15,8 @@ process VCF_TO_CSV_TRANSPOSE {
     --input ${vcf_file} \
     --output ${params.project}.${genotypes}.transpose.csv \
     --format csv \
-    --genotypes ${genotypes}
+    --genotypes ${genotypes} \
+    --name id
   """
 
 }

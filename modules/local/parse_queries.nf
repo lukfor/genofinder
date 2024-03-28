@@ -12,7 +12,9 @@ process PARSE_QUERIES {
   java -jar /opt/genomic-utils.jar \
     csv-to-bed \
     --input ${queries_file} \
-    --output ${params.project}.bed
+    --output ${params.project}.bed \
+    --build ${params.genotypes_build}
+
   """
 
 }
