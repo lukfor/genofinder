@@ -26,6 +26,7 @@ Channel.fromFilePairs(params.genotypes_imputed, size: 2).set {vcf_files}
 include { PARSE_QUERIES } from '../modules/local/parse_queries'
 include { EXTRACT_REGIONS_FROM_VCF } from '../modules/local/extract_regions_from_vcf'
 include { MERGE_VCF_FILES } from '../modules/local/merge_vcf_files'
+include { ANNOTATE_VCF as VCF_TO_CSV_GT} from '../modules/local/annotate_vcf.nf'
 include { VCF_TO_CSV as VCF_TO_CSV_GT} from '../modules/local/vcf_to_csv'
 include { VCF_TO_CSV as VCF_TO_CSV_DS} from '../modules/local/vcf_to_csv'
 include { VCF_TO_CSV_TRANSPOSE as VCF_TO_CSV_TRANSPOSE_GT} from '../modules/local/vcf_to_csv_transpose'
