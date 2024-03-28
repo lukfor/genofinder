@@ -34,8 +34,14 @@ include { VCF_TO_CSV_TRANSPOSE as VCF_TO_CSV_TRANSPOSE_DS} from '../modules/loca
 
 workflow EXTRACT_VARIANTS {
 
+    rsids = tuple(null, null, null)
+    if (params.rsids  != null) {
+        rsids =  Channel.fromFilePairs(params.rsids, size: 2, flat: true)
+    }
+            
     PARSE_QUERIES (
-        file(params.queries)
+        file(params.queries),
+        rsids
     )
 
     EXTRACT_REGIONS_FROM_VCF (
@@ -48,11 +54,11 @@ workflow EXTRACT_VARIANTS {
         EXTRACT_REGIONS_FROM_VCF.out.vcf_index_file.collect()
     )
 
-    if (params.rsids != null) {
-        rsids =  Channel.fromFilePairs(params.rsids, size: 2, flat: true)
+    if (params.annotation != null) {
+        annotation =  Channel.fromFilePairs(params.annotation, size: 2, flat: true)
         ANNOTATE_VCF (
             MERGE_VCF_FILES.out.vcf_file,
-            rsids
+            annotation
         )
         vcf_file = ANNOTATE_VCF.out.vcf_file
     } else {
