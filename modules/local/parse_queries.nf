@@ -11,7 +11,7 @@ process PARSE_QUERIES {
     path "${params.project}.bed", emit: bed_file
 
   script:
-    def dbsnp_param = (params.rsids != null : "--dbsnp ${rsids_vcf}" : "")
+    def dbsnp_param = (params.rsids != null ? "--dbsnp ${rsids_vcf}" : "")
 
   """
   java -jar /opt/genomic-utils.jar \
