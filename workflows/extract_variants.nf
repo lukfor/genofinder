@@ -24,6 +24,7 @@ if (params.genotypes_imputed_format != 'vcf'){
 Channel.fromFilePairs(params.genotypes_imputed, size: 2).set {vcf_files}
 
 include { PARSE_QUERIES } from '../modules/local/parse_queries'
+include { PARSE_QUERIES_RSIDS } from '../modules/local/parse_queries_rsids'
 include { EXTRACT_REGIONS_FROM_VCF } from '../modules/local/extract_regions_from_vcf'
 include { MERGE_VCF_FILES } from '../modules/local/merge_vcf_files'
 include { ANNOTATE_VCF} from '../modules/local/annotate_vcf.nf'
@@ -34,18 +35,22 @@ include { VCF_TO_CSV_TRANSPOSE as VCF_TO_CSV_TRANSPOSE_DS} from '../modules/loca
 
 workflow EXTRACT_VARIANTS {
 
-    rsids = tuple(null, null, null)
     if (params.rsids  != null) {
-        rsids =  Channel.fromFilePairs(params.rsids, size: 2, flat: true)
+        rsids =  Channel.fromFilePairs(params.rsids, size: 2, flat: true, checkExists: true)
+        PARSE_QUERIES_RSIDS (
+            file(params.queries),
+            rsids
+        )
+        bed_file = PARSE_QUERIES_RSIDS.out.bed_file
+    } else {
+        PARSE_QUERIES (
+            file(params.queries)
+        )
+        bed_file = PARSE_QUERIES.out.bed_file
     }
-            
-    PARSE_QUERIES (
-        file(params.queries),
-        rsids
-    )
 
     EXTRACT_REGIONS_FROM_VCF (
-        PARSE_QUERIES.out.bed_file,
+        bed_file.collect(),
         vcf_files
     )
 
@@ -55,7 +60,7 @@ workflow EXTRACT_VARIANTS {
     )
 
     if (params.annotation != null) {
-        annotation =  Channel.fromFilePairs(params.annotation, size: 2, flat: true)
+        annotation =  Channel.fromFilePairs(params.annotation, size: 2, flat: true, checkExists: true)
         ANNOTATE_VCF (
             MERGE_VCF_FILES.out.vcf_file,
             annotation
