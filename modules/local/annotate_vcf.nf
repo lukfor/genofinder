@@ -11,7 +11,8 @@ process ANNOTATE_VCF {
 
     """
     
-    # Annotate vcf with rsID to build nice feature name (-R nedded since there is a bug)
+    # Annotate vcf with rsID to build nice column names
+    bcftools index ${variants}
     bcftools annotate ${variants} -a ${rsids_vcf} -c ID -Oz -o ${params.project}.annotated.vcf.gz
 
     """
